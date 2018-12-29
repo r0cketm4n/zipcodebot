@@ -5,6 +5,7 @@ import string
 import sys
 import time
 import tqdm
+import traceback
 import unidecode
 
 
@@ -807,6 +808,12 @@ def souplantation():
     return zips
 
 
+def spangles():
+    response = requests.get("https://www.spanglesinc.com/locations")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def stansdonuts():
     response = requests.get("https://stansdonuts.com/wp-admin/admin-ajax.php?action=store_search&lat=41.87811&lng=-87.6298&max_results=25&search_radius=100&autoload=1").json()
     zips = []
@@ -1300,8 +1307,9 @@ if arg == "create" or arg == "list":
         print str(hits) + " other stores in data"
 else:
     try:
-        store_zips = globals()[store]()
+        store_zips = globals()[arg]()
         print store_zips
         print arg + ": " + str(len(store_zips)) + " stores"
     except Exception:
+        print traceback.format_exc()
         print "invalid arg!"
