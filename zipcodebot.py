@@ -496,7 +496,16 @@ def maxiesrestaurants():
 
 
 def meatheadsburgerfries():
-    response = requests.get("https://www.meatheadsburgers.com/locations-2/")
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
+    
+    response = requests.get("https://www.meatheadsburgers.com/locations-2/", headers=headers)
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
@@ -1272,6 +1281,84 @@ def zoeskitchen():
 
 def ztejassouthwesterngrill():
     return ['85226', '85028', '78759', '78703']
+
+def onethreeonemain():
+	sesh = requests.Session()
+	response = sesh.get("https://www.131-main.com")
+	urls = list(set(re.findall('Location" href\="(https:\/\/www\.131-main\.com\/.*?)"', str(response.content))))
+	zips = []
+
+	for url in urls:
+		response = sesh.get(url)
+		try:
+			zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+		except Exception:
+			print(response.url)
+
+	return zips
+
+def alexanderssteakhouse():
+	headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
+
+	response = requests.get("https://alexanderssteak.com/locations/", headers=headers)
+	zips = list(set(re.findall('\w{2} (\d{5})', str(response.content))))
+	return zips
+
+def alicartrestaurantgroup():
+	sesh = requests.Session()
+	response = sesh.get("https://www.carminesnyc.com")
+	urls = list(set(re.findall('"(https:\/\/www\.carminesnyc\.com\/locations\/.*?)"', str(response.content))))
+	response = sesh.get("https://www.virgilsbbq.com")
+	urls = urls + list(set(re.findall('"(https:\/\/www\.virgilsbbq\.com\/locations\/.*?)"', str(response.content))))
+	zips = []
+
+	for url in urls:
+	    response = sesh.get(url)
+	    try:
+	        zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+	    except Exception:
+	        continue
+
+	return zips
+
+def aquitainegroup():
+	response = requests.get("http://www.aquitainegroup.com/our-restaurants/")
+	zips = list(set(re.findall('\w{2} (\d{5})', str(response.content))))
+	zips += list(set(re.findall('\w{2}, (\d{5})', str(response.content))))
+	return zips
+
+def arnoldpalmersrestaurant():
+	return ['92253']
+
+def atriasrestaurants():
+	response = requests.get("http://atrias.com/wp/locations/")
+	zips = list(set(re.findall('\w{2} (\d{5})', str(response.content))))
+	return zips
+
+def avenirrestaurant():
+	return ['94301']
+
+def baggerdavesburgertavern():
+	sesh = requests.Session()
+	response = sesh.get("https://www.baggerdaves.com")
+	urls = list(set(re.findall('"(https:\/\/www\.baggerdaves\.com\/locations\/.*?)"', str(response.content))))
+	zips = []
+
+	for url in urls:
+	    response = sesh.get(url)
+	    try:
+	        zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+	    except Exception:
+	        continue
+
+	return zips
 
 
 try:
