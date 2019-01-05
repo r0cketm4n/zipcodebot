@@ -179,6 +179,16 @@ def barneysgourmethamburgers():
     return zips
 
 
+def biscuitscafe():
+    sesh = requests.Session()
+    states = ['arizona', 'oregon', 'washington']
+    zips = []
+    for state in states:
+        response = sesh.get("http://www.biscuitscafe.com/" + state + "/")
+        zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def blackbeardiner():
     response = requests.get("https://passport.blackbeardiner.com/api/locations?callback=callback_for_jsonp")
     zips = list(set(re.findall('zip":"(\d+)"', response.content)))
@@ -259,6 +269,24 @@ def broadwaypizza():
     return zips
 
 
+def brueggersbagels():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.brueggers.com/us")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.brueggers.com/" + state)
+        if state.count("/") > 1:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.brueggers.com/" + city)
+                zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+    return list(set(zips))
+
+
 def burgersandbeer():
     return ['92270', '85364', '92591', '92243', '92201']
 
@@ -280,6 +308,24 @@ def capriottissandwichshop():
     zips = []
     for store in zips:
         zips.append(str(store["postal_code"]))
+    return list(set(zips))
+
+
+def cariboucoffee():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.cariboucoffee.com/us")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.cariboucoffee.com/" + state)
+        if state.count("/") > 1:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.cariboucoffee.com/" + city)
+                zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
     return list(set(zips))
 
 
@@ -335,6 +381,26 @@ def elcholo():
 
 def empireeats():
     return ['27601', '27701', '27607']
+
+
+def einsteinbrosbagels():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.einsteinbros.com/us")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.einsteinbros.com/" + state)
+        print response.url
+        if state.count("/") > 1:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.einsteinbros.com/" + city)
+                print response.url
+                zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+    return list(set(zips))
 
 
 def fatheadsbrewery():
@@ -564,6 +630,24 @@ def mamamargies():
     return zips
 
 
+def manhattanbagels():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.manhattanbagel.com/us")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.manhattanbagel.com/" + state)
+        if state.count("/") > 1:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.manhattanbagel.com/" + city)
+                zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+    return list(set(zips))
+
+
 def marcustheatres():
     response = requests.get("http://www.marcustheatres.com/theatre-locations")
     zips = list(set(re.findall('postal\-code"\>(\d+)', response.content)))
@@ -644,6 +728,24 @@ def newkseatery():
     response = requests.get("https://newks.com/locations/")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
+
+
+def noahsbagels():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.noahs.com/us")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.noahs.com/" + state)
+        if state.count("/") > 1:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.noahs.com/" + city)
+                zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+    return list(set(zips))
 
 
 def noodlescompany():
@@ -1402,6 +1504,18 @@ if arg == "create" or arg == "list":
             continue
     if arg == "list":
         print str(hits) + " other stores in data"
+    else:
+        output_file = open("zipcode_data.json", "w+")
+        output_file.write(json.dumps(zipcode_data, sort_keys=True))
+        output_file.close()
+        data = {
+            'api_option': 'paste',
+            'api_paste_code': open("zipcode_data.json", "r").read().strip(),
+            'api_dev_key': '9efefa9735abafab975c7dd47e777913',
+            'api_user_key': '85afd7fb397361876fea0356ca7fc406'
+        }
+        response = requests.post("https://pastebin.com/api/api_post.php", data=data)
+        print "uploaded to: " + response.content
 else:
     try:
         store_zips = globals()[arg]()
