@@ -108,6 +108,7 @@ def amfbowling():
         zips.append(str(store["zip"]))
     return list(set(zips))
 
+#def anchorbar():
 
 def aquitainegroup():
 	response = requests.get("http://www.aquitainegroup.com/our-restaurants/")
@@ -166,6 +167,53 @@ def baggerdavesburgertavern():
 	        continue
 	return zips
 
+def bakerscrust():
+    sesh = requests.Session()
+    response = sesh.get('https://bakerscrust.com')
+    urls = list(set(re.findall('"\/locations\/(.*?)"', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://bakerscrust.com/locations/' + url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def bamboosushi():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
+
+    sesh = requests.Session()
+    response = sesh.get('https://bamboosushi.com/restaurants/', headers=headers)
+    urls = list(set(re.findall('href\="https:\/\/bamboosushi\.com\/restaurant\/(.*?)"', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://bamboosushi.com/restaurant/' + url, headers=headers)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def barillarestaurants():
+    sesh = requests.Session()
+    response = sesh.get('https://www.casabarilla.com')
+    urls = list(set(re.findall('href\="\/(location-.*?)"', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://www.casabarilla.com/' + url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
 
 def barlouie():
     response = requests.get("https://www.barlouie.com/locations/states")
@@ -178,6 +226,50 @@ def barneysgourmethamburgers():
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
+def barrybagels():
+    sesh = requests.Session()
+    response = sesh.get('https://barrybagels.com/locations/')
+    urls = list(set(re.findall('href\="(.*?)" class\="icon', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://barrybagels.com/locations/' + url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def beachesrestaurantbar():
+    response = requests.get("http://beachesrestaurantandbar.com")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+def beaujospizza():
+    sesh = requests.Session()
+    response = sesh.get('https://www.beaujos.com')
+    urls = list(set(re.findall('\/pizza-locations\/(.*?)/', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://www.beaujos.com/pizza-locations/' + url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def bigoniontaverngroup():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
+
+    response = requests.get("https://www.bigoniontaverngroup.com", headers=headers)
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
 
 def biscuitscafe():
     sesh = requests.Session()
@@ -192,6 +284,24 @@ def biscuitscafe():
 def blackbeardiner():
     response = requests.get("https://passport.blackbeardiner.com/api/locations?callback=callback_for_jsonp")
     zips = list(set(re.findall('zip":"(\d+)"', response.content)))
+    return zips
+
+def blackrockbargrill():
+    sesh = requests.Session()
+    response = sesh.get('https://www.blackrockrestaurants.com')
+    urls = list(set(re.findall('href="(https:\/\/\www.blackrockrestaurants\.com\/.*?)" target\="_self" id\="comp', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get(url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def blackwalnutcafe():
+    response = requests.get("https://www.blackwalnutcafe.com/locations/")
+    zips = list(set(re.findall('(\d{5})</p>', response.content)))
     return zips
 
 
@@ -215,6 +325,36 @@ def blakeslotaburger():
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
+def blazepizza():
+    response = requests.get("https://www.blazepizza.com/locations/")
+    zips = list(set(re.findall('zip":"(\d+)"', response.content)))
+    return zips
+
+def blindbarber():
+    sesh = requests.Session()
+    response = sesh.get('https://blindbarber.com')
+    urls = list(set(re.findall('href="(\/pages\/.*?)" class="nav-link sub-nav-link"', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://blindbarber.com/' + url)
+        try:
+            zips.append(re.search('\w{2} (\d{5})</p>', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
+
+def bluewatergrill():
+    sesh = requests.Session()
+    response = sesh.get('https://www.bluewatergrill.com/locations')
+    urls = list(set(re.findall('href="(\/locations\/.*?)"', str(response.content))))
+    zips = []
+    for url in urls:
+        response = sesh.get('https://www.bluewatergrill.com' + url)
+        try:
+            zips.append(re.search('class\="zip-code">(\d{5})', str(response.content)).group(1))
+        except Exception:
+            continue
+    return zips
 
 def bobssteakandchop():
     headers = {
