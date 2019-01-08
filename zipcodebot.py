@@ -226,6 +226,7 @@ def barneysgourmethamburgers():
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
+
 def barrybagels():
     sesh = requests.Session()
     response = sesh.get('https://barrybagels.com/locations/')
@@ -239,10 +240,12 @@ def barrybagels():
             continue
     return zips
 
+
 def beachesrestaurantbar():
     response = requests.get("http://beachesrestaurantandbar.com")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
+
 
 def beaujospizza():
     sesh = requests.Session()
@@ -257,6 +260,7 @@ def beaujospizza():
             continue
     return zips
 
+
 def bigoniontaverngroup():
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
@@ -270,6 +274,7 @@ def bigoniontaverngroup():
     response = requests.get("https://www.bigoniontaverngroup.com", headers=headers)
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
+
 
 def biscuitscafe():
     sesh = requests.Session()
@@ -286,6 +291,7 @@ def blackbeardiner():
     zips = list(set(re.findall('zip":"(\d+)"', response.content)))
     return zips
 
+
 def blackrockbargrill():
     sesh = requests.Session()
     response = sesh.get('https://www.blackrockrestaurants.com')
@@ -298,6 +304,7 @@ def blackrockbargrill():
         except Exception:
             continue
     return zips
+
 
 def blackwalnutcafe():
     response = requests.get("https://www.blackwalnutcafe.com/locations/")
@@ -325,10 +332,12 @@ def blakeslotaburger():
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
+
 def blazepizza():
     response = requests.get("https://www.blazepizza.com/locations/")
     zips = list(set(re.findall('zip":"(\d+)"', response.content)))
     return zips
+
 
 def blindbarber():
     sesh = requests.Session()
@@ -343,6 +352,7 @@ def blindbarber():
             continue
     return zips
 
+
 def bluewatergrill():
     sesh = requests.Session()
     response = sesh.get('https://www.bluewatergrill.com/locations')
@@ -356,7 +366,8 @@ def bluewatergrill():
             continue
     return zips
 
-def bobssteakandchop():
+
+def bobssteakandchophouse():
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -403,6 +414,12 @@ def blackshoehospitality():
     return zips
 
 
+def brewhahacafe():
+    response = requests.get("http://www.brewhaha.com/locations/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def broadwaypizza():
     response = requests.get("http://www.broadwaypizza.com/locations.html")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
@@ -439,6 +456,12 @@ def burgerlounge():
 
 def burntwoodtavern():
     response = requests.get("https://www.burntwoodtavern.com/locations-1/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
+def cafezupas():
+    response = requests.get("https://cafezupas.com/locations.html")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
@@ -798,6 +821,20 @@ def maxiesrestaurants():
     return ['53213']
 
 
+def mcalistersdeli():
+    sesh = requests.Session()
+    response = sesh.get("https://www.mcalistersdeli.com/locations")
+    states = re.findall('"/locations/(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://www.mcalistersdeli.com/locations/" + state)
+        cities = re.findall('"/locations/' + state + '/(.*?)"', response.content)
+        for city in cities:
+            response = sesh.get("https://www.mcalistersdeli.com/locations/" + state + "/" + city)
+            zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return list(set(zips))
+
+
 def meatheadsburgerfries():
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
@@ -809,6 +846,12 @@ def meatheadsburgerfries():
     }
     
     response = requests.get("https://www.meatheadsburgers.com/locations-2/", headers=headers)
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
+def menchiesfrozenyogurt():
+    response = requests.get("https://www.menchies.com/all-locations")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
@@ -1067,6 +1110,12 @@ def saltiron():
 def sakesushi():
     response = requests.get("http://www.sushisakemiami.com/locations/")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
+def saucepizzawine():
+    response = requests.get("http://www.saucepizzaandwine.com/locations/")
+    zips = list(set(re.findall('\w{2}\+(\d{5})', response.content)))
     return zips
 
 
