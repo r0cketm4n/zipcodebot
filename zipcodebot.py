@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 import re
 import requests
 import string
@@ -640,6 +641,20 @@ def garretpopcornshops():
     return list(set(zips))
 
 
+def goldencorral():
+    sesh = requests.Session()
+    sesh.headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0'
+    }
+    response = sesh.get("https://www.goldencorral.com/all-locations/")
+    stores = re.findall('(/locations/\d+/.*?)"', response.content)
+    zips = []
+    for store in stores:
+        response = sesh.get("https://www.goldencorral.com" + store)
+        zips.append(re.search('\w{2} (\d{5})', response.content).group(1))
+    return zips
+
+
 def goodwoodbbq():
     response = requests.get("https://goodwoodbbq.com/")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
@@ -1016,6 +1031,14 @@ def patxispizza():
     return zips
 
 
+def peetscoffeetea():
+    response = requests.get("https://momentfeed-prod.apigee.net/api/llp.json?auth_token=CVVDLCJRQEBHCLCL&center=41.2524,-95.998&coordinates=-13.923403897723334,-32.51953125,71.80141030136785,-159.43359375&page=1&pageSize=30").json()
+    zips = []
+    for store in response:
+        zips.append(str(store["store_info"]["postcode"]))
+    return list(set(zips))
+
+
 def perryssteakhouse():
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
@@ -1033,13 +1056,31 @@ def perryssteakhouse():
     return zips
 
 
+def pfchangschinabistro():
+    sesh = requests.Session()
+    response = sesh.get("https://www.pfchangs.com/locations/index.html")
+    states = re.findall('c-directory-list-content-item-link" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://www.pfchangs.com/locations/" + state)
+        if state.count("/") > 2:
+            zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+        else:
+            cities = re.findall('c-directory-list-content-item-link" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://www.pfchangs.com/locations/" + city)
+                zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return list(set(zips))
+
+
 def piadaitalianstreetfood():
     response = requests.get("https://mypiada.com/locations")
     zips = list(set(re.findall('zip\: "(\d+)"', response.content)))
     return zips
 
 
-def pinchers():
+def pincherscrabshack():
     sesh = requests.Session()
     sesh.headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
@@ -1066,7 +1107,7 @@ def planetsub():
     zips = []
     sesh = requests.Session()
     for cord in cords:
-        response = sesh.get("htt    print response.contentp://api.geonames.org/findNearbyPostalCodesJSON?lat=" + cord[0] + "&lng=" + cord[1] + "&username=r0cketm4n&maxRows=1").json()
+        response = sesh.get("http://api.geonames.org/findNearbyPostalCodesJSON?lat=" + cord[0] + "&lng=" + cord[1] + "&username=r0cketm4n&maxRows=1").json()
         zips.append(str(response["postalCodes"][0]["postalCode"]))
         time.sleep(1)
     return list(set(zips))
@@ -1108,6 +1149,45 @@ def romanosmacaronigrill():
     return zips
 
 
+def roundtablepizza():
+    response = requests.get("http://www.roundtablepizza.com/rtp/finder_location_all.asp")
+    addresses = re.findall('\<tr\>.*?\<td\>(\w{2})\</td\>.*?\<td\>([A-Za-z ]+)\</td\>.*?\<td\>\<a.*?\>(.*?)\</a', response.content, re.DOTALL)
+    usps_sesh = requests.Session()
+    usps_sesh.headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://tools.usps.com/zip-code-lookup.htm?byaddress',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+    }
+    zips = []
+    for address in addresses:
+        data = {
+            'companyName': '',
+            'address1': address[2],
+            'address2': '',
+            'city': address[1],
+            'state': address[0],
+            'zip': ''
+        }
+        response = usps_sesh.post('https://tools.usps.com/tools/app/ziplookup/zipByAddress', data=data)
+        time.sleep(0.5)
+        try:
+            zips.append(response.json()["addressList"][0]["zip5"])
+        except Exception:
+            pass
+    return list(set(zips))
+
+
+def sakesushi():
+    response = requests.get("http://www.sushisakemiami.com/locations/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def sallybeautysupply():
     response = requests.get("https://maps.sallybeauty.com/api/getAutocompleteData")
     return list(set(re.findall('(\d{5})', response.content)))
@@ -1127,9 +1207,9 @@ def saltiron():
     return ['98020']
 
 
-def sakesushi():
-    response = requests.get("http://www.sushisakemiami.com/locations/")
-    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+def salsaritasfreshmexicangrill():
+    response = requests.get("https://salsaritas.com/locations/")
+    zips = list(set(re.findall('"postal_code":"(\d+)"', response.content)))
     return zips
 
 
@@ -1175,6 +1255,12 @@ def seaislandshrimphouse():
     return zips
 
 
+def shanesribshack():
+    response = requests.get("https://www.shanesribshack.com/locations/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def shoneys():
     response = requests.get("https://www.shoneys.com/stores.json").json()
     zips = []
@@ -1213,10 +1299,16 @@ def spangles():
     return zips
 
 
-def stansdonuts():
+def springcreekbarbeque():
+    response = requests.get("https://springcreekbarbeque.com/locations/")
+    zips = list(set(re.findall('\w (\d{5})', response.content)))
+    return zips
+
+
+def stansdonutscoffee():
     response = requests.get("https://stansdonuts.com/wp-admin/admin-ajax.php?action=store_search&lat=41.87811&lng=-87.6298&max_results=25&search_radius=100&autoload=1").json()
     zips = []
-    for store in zips:
+    for store in response:
         zips.append(str(store["zip"]))
     return zips
 
