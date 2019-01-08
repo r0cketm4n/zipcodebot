@@ -504,8 +504,22 @@ def cowboychicken():
     return zips
 
 
-# def chamagaucha():
-#     response = requests.get("")
+def dickeysbarbecuepit():
+    sesh = requests.Session()
+    response = sesh.get("https://www.dickeys.com/location/search-by-state")
+    states = re.findall('/location/search-by-state/(\d+)', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://www.dickeys.com/location/search-by-state/" + state)
+        print response.url
+        cities = re.findall('/location/search-by-city/' + state + '/(.*?)"', response.content)
+        for city in cities:
+            time.sleep(1)
+            response = sesh.get("https://www.dickeys.com/location/search-by-city/" + state + "/" + city)
+            print response.url
+            zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return list(set(zips))
+
 
 def dintaifung():
     response = requests.get("http://dintaifungusa.com/locations_us/")
@@ -899,6 +913,12 @@ def motomaki():
 
 def mshackburgers():
     return ['32801', '32204', '32246', '32233']
+
+
+def nafnafgrill():
+    response = requests.get("https://nafnafgrill.com/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
 
 
 def nandosperiperi():
