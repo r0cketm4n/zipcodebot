@@ -21,7 +21,7 @@ def onetengrill():
         try:
             zips.append(re.search('\w{2} (\d{5})', response.content).group(1))
         except:
-            print response.url
+            pass
     return list(set(zips))
 
 
@@ -47,6 +47,10 @@ def fourriverssmokehouse():
 
 def seventeenthstreetbbq():
     return ["62966", "62559"]
+
+
+def thirteencoins():
+    return ['98104', '98004', '98188']
 
 
 def abuelos():
@@ -535,13 +539,27 @@ def dickeysbarbecuepit():
     zips = []
     for state in states:
         response = sesh.get("https://www.dickeys.com/location/search-by-state/" + state)
-        print response.url
         cities = re.findall('/location/search-by-city/' + state + '/(.*?)"', response.content)
         for city in cities:
             time.sleep(1)
             response = sesh.get("https://www.dickeys.com/location/search-by-city/" + state + "/" + city)
-            print response.url
             zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return list(set(zips))
+
+
+def dickswingsgrill():
+    sesh = requests.Session()
+    response = sesh.get("https://dickswingsandgrill.com/#locations")
+    stores = list(set(re.findall('"/locations/(.*?)"', response.content)))
+    zips = []
+    for store in stores:
+        response = sesh.get("https://dickswingsandgrill.com/locations/" + store)
+        try:
+            iframe_link = re.search('iframe src\="(https://www.google.com/maps.*?)"', response.content).group(1)
+        except Exception:
+            continue
+        response = sesh.get(iframe_link)
+        zips.append(re.search('\w{2} (\d{5})', response.content).group(1))
     return list(set(zips))
 
 
@@ -598,7 +616,6 @@ def einsteinbrosbagels():
     zips = []
     for state in states:
         response = sesh.get("https://locations.einsteinbros.com/" + state)
-        print response.url
         if state.count("/") > 1:
             zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
         else:
@@ -606,7 +623,6 @@ def einsteinbrosbagels():
             for city in cities:
                 city = city.replace("../", "")
                 response = sesh.get("https://locations.einsteinbros.com/" + city)
-                print response.url
                 zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
     return list(set(zips))
 
@@ -956,6 +972,12 @@ def motomaki():
     return list(set(zips))
 
 
+def moxiejava():
+    response = requests.get("https://www.moxiejava.com/locations")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def mshackburgers():
     return ['32801', '32204', '32246', '32233']
 
@@ -1029,7 +1051,7 @@ def ojoslocos():
         try:
             zips.append(re.search('\w{2}(?: )? (\d{5})', response.content).group(1))
         except Exception:
-            print response.url
+            pass
     return list(set(zips))
 
 
@@ -1082,6 +1104,23 @@ def perryssteakhouse():
         'TE': 'Trailers',
     }
     response = requests.get("https://perryssteakhouse.com/locations/", headers=headers)
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
+def pizzarev():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://www.google.com/',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Cache-Control': 'max-age=0',
+        'TE': 'Trailers',
+    }
+    response = requests.get("https://pizzarev.com/locations-pizza-places-near-me/", headers=headers)
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
 
@@ -1309,6 +1348,24 @@ def skylinechili():
     return zips
 
 
+def smashburger():
+    sesh = requests.Session()
+    response = sesh.get("https://locations.smashburger.com/united-states")
+    states = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://locations.smashburger.com/" + state)
+        if state.count("/") > 2:
+            zips += list(set(re.findall('c\-address\-postal\-code" \>(\d{5})\<', response.content)))
+        else:
+            cities = re.findall('Directory\-listLink" href\="(.*?)"', response.content)
+            for city in cities:
+                city = city.replace("../", "")
+                response = sesh.get("https://locations.smashburger.com/" + city)
+                zips += list(set(re.findall('postalCode"\>(\d{5})\<', response.content)))
+    return list(set(zips))
+
+
 def soundendbuttery():
     response = requests.get("http://southendbuttery.com/locations/")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
@@ -1327,6 +1384,17 @@ def spangles():
     response = requests.get("https://www.spanglesinc.com/locations")
     zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
     return zips
+
+
+def specialtyscafebakery():
+    sesh = requests.Session()
+    response = sesh.get("https://www.specialtys.com/Cafes.aspx")
+    stores = list(set(re.findall('Store\=(.*?)"', response.content)))
+    zips = []
+    for store in stores:
+        response = sesh.get("https://www.specialtys.com/Location.aspx?Store=" + store)
+        zips.append(re.search('\w{2} (\d{5})', response.content).group(1))
+    return list(set(zips))
 
 
 def springcreekbarbeque():
@@ -1717,7 +1785,7 @@ def wecks():
             try:
                 zips.append(re.search('postalCode"\>(\d+)', response.content).group(1))
             except Exception:
-                print response.url
+                pass
     zips = list(set(zips))
     return zips
 
@@ -1787,7 +1855,7 @@ def zoeskitchen():
         try:
             zips.append(re.search('\w{2} (\d{5})', response.content).group(1))
         except Exception:
-            print response.url
+            pass
     return list(set(zips))
 
 
