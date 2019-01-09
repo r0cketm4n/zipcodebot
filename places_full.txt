@@ -1,11 +1,14 @@
 110 Grill
+13 Coins
 131 Main
 17th Street Barbecue
 4 Rivers Smokehouse
 AMC Theatres
 AMF Bowling
 Abuelos
+Acme Oyster House
 Al's Pizza
+Alama Drafthouse
 Alexander's Steakhouse
 Alicart Restaurant Group
 Anchor Bar
@@ -52,6 +55,7 @@ Brew HaHa Cafe
 British Beer Company
 Broadway Pizza
 Buckhead Mountain Grill
+Buffalo Bill's Brewery
 Burger Lounge
 Burgers and Beer
 Burntwood Tavern
@@ -59,9 +63,12 @@ Burrito Bay
 Burton's Grill
 Butterbee's American Grille
 CO Sushi
+CRAVE American Kitchen & Sushi Bar
+Cafe Patachou
 Cafe Rio
 Cafe Zupas
 Cameron Mitchell Restaurants
+Cane Russo
 Capriotti's Sandwich Shop
 Carmines
 Cattleman's Roadhouse
@@ -80,15 +87,17 @@ Coffee & Bagels
 Colton's Steak House
 Cookies by George
 Cowboy Chicken
+Crack Shack
 Cracker Barrel
 CraftWorks Restaurants
 Creamistry
 Crispers
 Cunningham Restaurant Group
+Curate
 Daphne's California Greek
+Diamond Knot Brewing
 Dick's Wings & Grill
 Dickey's Barbecue Pit
-Din Tai Fung
 Dinosaur Bar-B-Que
 District Taco
 Doolittles Woodfire Grill
@@ -109,6 +118,7 @@ Epic Wings N Things
 Erberts and Gerberts
 Espetus Churrascaria
 Eureka! American Restaurants
+Eureka! Restaurants
 FATZ Southern Kitchen
 Farmer Boys
 Fat Head's Brewery
@@ -130,6 +140,7 @@ Fricker's
 Frisch's Big Boy
 Fuddruckers
 Furr's Fresh Buffet
+Fusian
 Garces Group
 Garrett Popcorn Shops
 Gas Monkey Bar N' Grill
@@ -139,6 +150,7 @@ Gino's East
 Glow Fisch Hospitality
 Godfather's Pizza
 Golden Corral
+Good Stuff Restaurants
 Goodwood BBQ
 Graeter's Ice Cream
 Granite City & Cadillac Ranch
@@ -153,21 +165,22 @@ Harry's Seafood & Grille
 Hat Creek Burgers
 Havana Central
 Hell's Kitchen Inc.
+Hemisphere Restaurant Group
 Hillstone Restaurant Group
 Hofbrauhaus Columbus
 Hofbrauhaus Newport
 Hofbrauhaus Pittsburgh
 Hoffbrau Steak & Grill
+Hogsalt Hospitality
 Homegrown
 Hometown/Old Country Buffet
 Hooley House
 HopCat
 Hopjack's
 Hot Dog on a Stick
-Hotshots Spots Bar & Grill
+Hotshots Sports Bar & Grill
 Houlihan's
 Huckleberry's
-Hungry Howie's
 Hurricane Grill & Wings
 Ike's Place
 Insomnia Cookies
@@ -191,7 +204,7 @@ Jinya Ramen Bar
 Jose Peppers
 Just Salad
 Kabuki Japanese Restaurant
-Katie Button Restaurants
+Karl Strauss Brewing
 Kerbey Lane Cafe
 Kilroy's Bar N' Grill
 King's Seafood & Company
@@ -200,9 +213,11 @@ Krystal
 La Fiesta
 La Parrilla
 LaRosa's Pizzeria
+Landmark Americana
 Landry's Inc.
 Larkburger
 Leeann Chin
+Left Bank Brasserie
 Ling & Louie's
 Lion and Rose
 Local Ocean Seafoods
@@ -220,6 +235,7 @@ Maggie McFly's
 Main Event
 Maison Kayser
 Mama Margies Mexican Restaurant
+Marco's Pizza
 Marcus Theatres
 Marquee Cinemas
 Massage Envy
@@ -245,18 +261,20 @@ Nando's Peri-Peri
 Native Foods Cafe
 New Orleans Hamburger & Seafood
 Newk's Eatery
+Nightbell
 Noodles & Company
 Norms Restaurants
 Not Just Burgers
+Odd Duck Restaurant
 Ojos Locos
 Oklahoma Joe's
 Olga's Kitchen
 Oregano's Pizza Bistro
 Original Roadhouse Grill
+Ott's Tavern
 P. F. Chang's China Bistro
 P.J.W. Restaurant Group
 Painting with a Twist
-Paisano's
 Parry's Pizzeria & Bar
 Pasha Mediterranean Grill
 Patxi's Pizza
@@ -276,6 +294,7 @@ Plaza Azteca
 Potbelly
 Primanti Bros
 Pudgie's Pizza & Subs
+Puesto
 Punch Bowl Social
 Punch Pizza
 Quaker Steak & Lube
@@ -301,6 +320,7 @@ Sally Beauty Supply
 Salsarita's Fresh Mexican Grill
 Salt & Iron
 Salt Creek Grille
+Salty's Waterfront Seafood Grill
 Salty's Waterfront Seafood Grills
 Salvatore's Hospitality
 Sauce Pizza & Wine
@@ -309,6 +329,7 @@ Scotty's Brewhouse
 Scrambler Marie's
 Sea Island Shrimp House
 Sebago Brewing Company
+Shanahan's Steakhouse
 Shane's Rib Shack
 Shoney's
 Shooters Sports Grill
@@ -326,9 +347,12 @@ Sound End Buttery
 Souplantation
 Spaghetti Warehouse
 Spangles
+Specialty's Cafe & Bakery
 Spring Creek Barbeque
 Sprout's Los Angeles Restaurants
+St. Elmo Steak House
 Stan's Donuts & Coffee
+Star Cinema Grill
 Starbucks Coffee
 Starky's
 Starr Restaurants
@@ -341,6 +365,7 @@ Super Duper Burgers
 Sushi Zen
 Taco Deli
 Taco Mac Restaurants
+Taco Ocho
 Tahoe Joe's
 Tarka Indian Kitchen
 Tasti D-Lite
@@ -404,6 +429,7 @@ Whirlyball
 Whiskey Cake Kitchen & Bar
 Wildflower Bread Company
 Winking Lizard Restaurant & Tavern
+Wood Ranch BBQ & Grill
 Wood-n-Tap Bar & Grill
 World of Beer
 Yogurt Mountain

@@ -445,6 +445,12 @@ def brueggersbagels():
     return list(set(zips))
 
 
+def buckheadmountaingrill():
+    response = requests.get("https://www.buckheadmountaingrill.com/locations/")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return zips
+
+
 def burgersandbeer():
     return ['92270', '85364', '92591', '92243', '92201']
 
@@ -499,6 +505,23 @@ def chuystexmex():
     return zips
 
 
+def cicis():
+    sesh = requests.Session()
+    response = sesh.get("https://www.cicis.com/locations")
+    states = re.findall('c-directory-list-content-item-link" href\="(.*?)"', response.content)
+    zips = []
+    for state in states:
+        response = sesh.get("https://www.cicis.com/locations/" + state)
+        if "-" in state:
+            zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+        else:
+            cities = re.findall('c-directory-list-content-item-link" href\="(.*?)"', response.content)
+            for city in cities:
+                response = sesh.get("https://www.cicis.com/locations/" + city)
+                zips += list(set(re.findall('\w{2} (\d{5})', response.content)))
+    return list(set(zips))
+
+
 def cowboychicken():
     response = requests.get("https://www.cowboychicken.com/locations/")
     zips = list(set(re.findall('\w{2}, (\d{5})', response.content)))
@@ -545,6 +568,13 @@ def doolittleswoodfiredgrill():
         except:
             pass
     return list(set(zips))
+
+
+def dostoros():
+    response = requests.get("https://www.dostoros.com/locations/new-york")
+    zips = list(set(re.findall('\w{2} (\d{5})', response.content)))
+    zips.append("60602")
+    return zips
 
 
 def elcholo():
@@ -1765,63 +1795,64 @@ def ztejassouthwesterngrill():
     return ['85226', '85028', '78759', '78703']
 
 
-try:
-    arg = sys.argv[1]
-except Exception:
-    print "no arg specified!"
-if arg == "create" or arg == "list":
-    hits = 0
-    zipcode_data = {}
-    stores = [x.strip() for x in open("places_full.txt", "r").readlines()]
-    for store in (tqdm.tqdm(stores) if arg == "create" else stores):
-        original_name = store
-        try:
-            store = str(unidecode.unidecode(unicode(store)))
-        except Exception:
-            pass
-        if "110 Grill" in store:
-            store = "onetengrill"
-        elif "4 Rivers" in store:
-            store = "fourriverssmokehouse"
-        elif "17th Street" in store:
-            store = "seventeenthstreetbarbecue"
-        elif "131" in store:
-            store = "onethreeonemain"
-        else:
-            store = store.translate(None, string.punctuation).lower().replace(" ", "")
-        try:
-            globals()[store]
-            hits += 1
-            if arg == "create":
-                store_zips = globals()[store]()
-                for zipcode in store_zips:
-                    if zipcode in zipcode_data:
-                        zipcode_data[zipcode].append(original_name)
-                    else:
-                        zipcode_data[zipcode] = [original_name]
-        except Exception:
-            if arg == "list":
-                print original_name
-            continue
-    if arg == "list":
-        print str(hits) + " other stores in data"
-    else:
-        output_file = open("zipcode_data.json", "w+")
-        output_file.write(json.dumps(zipcode_data, sort_keys=True))
-        output_file.close()
-        data = {
-            'api_option': 'paste',
-            'api_paste_code': open("zipcode_data.json", "r").read().strip(),
-            'api_dev_key': '9efefa9735abafab975c7dd47e777913',
-            'api_user_key': '85afd7fb397361876fea0356ca7fc406'
-        }
-        response = requests.post("https://pastebin.com/api/api_post.php", data=data)
-        print "uploaded to: " + response.content
-else:
+if __name__ == "__main__":
     try:
-        store_zips = globals()[arg]()
-        print store_zips
-        print arg + ": " + str(len(store_zips)) + " stores"
+        arg = sys.argv[1]
     except Exception:
-        print traceback.format_exc()
-        print "invalid arg!"
+        print "no arg specified!"
+    if arg == "create" or arg == "list":
+        hits = 0
+        zipcode_data = {}
+        stores = [x.strip() for x in open("places_full.txt", "r").readlines()]
+        for store in (tqdm.tqdm(stores) if arg == "create" else stores):
+            original_name = store
+            try:
+                store = str(unidecode.unidecode(unicode(store)))
+            except Exception:
+                pass
+            if "110 Grill" in store:
+                store = "onetengrill"
+            elif "4 Rivers" in store:
+                store = "fourriverssmokehouse"
+            elif "17th Street" in store:
+                store = "seventeenthstreetbarbecue"
+            elif "131" in store:
+                store = "onethreeonemain"
+            else:
+                store = store.translate(None, string.punctuation).lower().replace(" ", "")
+            try:
+                globals()[store]
+                hits += 1
+                if arg == "create":
+                    store_zips = globals()[store]()
+                    for zipcode in store_zips:
+                        if zipcode in zipcode_data:
+                            zipcode_data[zipcode].append(original_name)
+                        else:
+                            zipcode_data[zipcode] = [original_name]
+            except Exception:
+                if arg == "list":
+                    print original_name
+                continue
+        if arg == "list":
+            print str(hits) + " other stores in data"
+        else:
+            output_file = open("zipcode_data.json", "w+")
+            output_file.write(json.dumps(zipcode_data, sort_keys=True))
+            output_file.close()
+            data = {
+                'api_option': 'paste',
+                'api_paste_code': open("zipcode_data.json", "r").read().strip(),
+                'api_dev_key': '9efefa9735abafab975c7dd47e777913',
+                'api_user_key': '85afd7fb397361876fea0356ca7fc406'
+            }
+            response = requests.post("https://pastebin.com/api/api_post.php", data=data)
+            print "uploaded to: " + response.content
+    else:
+        try:
+            store_zips = globals()[arg]()
+            print store_zips
+            print arg + ": " + str(len(store_zips)) + " stores"
+        except Exception:
+            print traceback.format_exc()
+            print "invalid arg!"
