@@ -1863,59 +1863,64 @@ def ztejassouthwesterngrill():
     return ['85226', '85028', '78759', '78703']
 
 
+def multiprocess_wrapper(store_name):
+    try:
+        store = str(unidecode.unidecode(unicode(store_name)))
+    except Exception:
+        pass
+    if "110 Grill" in store:
+        store = "onetengrill"
+    elif "4 Rivers" in store:
+        store = "fourriverssmokehouse"
+    elif "17th Street" in store:
+        store = "seventeenthstreetbarbecue"
+    elif "131" in store:
+        store = "onethreeonemain"
+    else:
+        store = store.translate(None, string.punctuation).lower().replace(" ", "")
+    try:
+        zips = globals()[store]()
+        return [store_name, zips]
+    except Exception:
+        return [store_name, "nofunction"]
+
 if __name__ == "__main__":
     try:
         arg = sys.argv[1]
     except Exception:
         print "no arg specified!"
-    if arg == "create" or arg == "list":
+    if arg == "create":
         hits = 0
         zipcode_data = {}
         stores = [x.strip() for x in open("places_full.txt", "r").readlines()]
-        for store in (tqdm.tqdm(stores) if arg == "create" else stores):
-            original_name = store
-            try:
-                store = str(unidecode.unidecode(unicode(store)))
-            except Exception:
-                pass
-            if "110 Grill" in store:
-                store = "onetengrill"
-            elif "4 Rivers" in store:
-                store = "fourriverssmokehouse"
-            elif "17th Street" in store:
-                store = "seventeenthstreetbarbecue"
-            elif "131" in store:
-                store = "onethreeonemain"
-            else:
-                store = store.translate(None, string.punctuation).lower().replace(" ", "")
-            try:
-                globals()[store]
-                hits += 1
-                if arg == "create":
-                    store_zips = globals()[store]()
-                    for zipcode in store_zips:
+        pool = multiprocessing.Pool(16)
+        with tqdm.tqdm(total=len(stores)) as pbar:
+            for i in pool.imap_unordered(multiprocess_wrapper, stores):
+                pbar.update()
+                if "nofunction" not in str(i):
+                    hits += 1
+                    for zipcode in list(i)[1]:
                         if zipcode in zipcode_data:
-                            zipcode_data[zipcode].append(original_name)
+                            zipcode_data[zipcode].append(list(i)[0])
                         else:
-                            zipcode_data[zipcode] = [original_name]
-            except Exception:
-                if arg == "list":
-                    print original_name
-                continue
-        if arg == "list":
-            print str(hits) + " other stores in data"
-        else:
-            output_file = open("zipcode_data.json", "w+")
-            output_file.write(json.dumps(zipcode_data, sort_keys=True))
-            output_file.close()
-            data = {
-                'api_option': 'paste',
-                'api_paste_code': open("zipcode_data.json", "r").read().strip(),
-                'api_dev_key': '9efefa9735abafab975c7dd47e777913',
-                'api_user_key': '85afd7fb397361876fea0356ca7fc406'
-            }
-            response = requests.post("https://pastebin.com/api/api_post.php", data=data)
-            print "uploaded to: " + response.content
+                            zipcode_data[zipcode] = [list(i)[0]]
+                    pbar.set_description("Completed: " + str(hits))
+                    pbar.refresh()
+        try:
+            pool.terminate()
+        except:
+            pass
+        output_file = open("zipcode_data.json", "w+")
+        output_file.write(json.dumps(zipcode_data, sort_keys=True))
+        output_file.close()
+        data = {
+            'api_option': 'paste',
+            'api_paste_code': open("zipcode_data.json", "r").read().strip(),
+            'api_dev_key': '9efefa9735abafab975c7dd47e777913',
+            'api_user_key': '85afd7fb397361876fea0356ca7fc406'
+        }
+        response = requests.post("https://pastebin.com/api/api_post.php", data=data)
+        print "uploaded to: " + response.content
     else:
         try:
             store_zips = globals()[arg]()
